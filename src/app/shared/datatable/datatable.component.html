@@ -1,0 +1,12 @@
+<table datatable [dtOptions]="dtOptions" class="display compact responsive w-100 table table-striped table-bordered row-border hover mb-4 p-0">
+  <thead>
+    <tr>
+      <th *ngFor="let col of columns">{{ col.title }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of taskData"> <!-- Usar taskData aquí -->
+      <td *ngFor="let col of columns">{{ row[col.data] }}</td>
+    </tr>
+  </tbody>
+</table>

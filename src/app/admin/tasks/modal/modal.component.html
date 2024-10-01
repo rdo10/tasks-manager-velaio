@@ -1,0 +1,13 @@
+<div class="modal-overlay">
+    <div class="modal-content">
+     <h5 class="mb-5">Personas Asociadas</h5>
+      <ul>
+        <li *ngFor="let person of peopleAssociated">
+          {{ person.nombreCompleto }}
+        </li>
+      </ul>
+  
+      <button class="btn btn-success" (click)="onClose()">Cerrar</button>
+    </div>
+  </div>
+  

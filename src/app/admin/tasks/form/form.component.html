@@ -1,0 +1,92 @@
+<app-card [titulo]="titulo">
+  <form [formGroup]="form" class="row">
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <label for="nombre">Nombre Tarea</label>
+        <input [class.isValid]="form.controls['nombre'].touched && form.controls['nombre'].valid"
+          [class.is-inValid]="form.controls['nombre'].touched && form.controls['nombre'].invalid" type="text"
+          formControlName="nombre" class="form-control" id="nombre" placeholder="Nombre de la tarea">
+        <span class="messages text-danger" *ngIf="form.controls['nombre'].touched && form.controls['nombre'].invalid">
+          Este campo es obligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="fechaLimite">Fecha Límite</label>
+        <input [class.isValid]="form.controls['fechaLimite'].touched && form.controls['fechaLimite'].valid"
+          [class.is-inValid]="form.controls['fechaLimite'].touched && form.controls['fechaLimite'].invalid" type="date"
+          formControlName="fechaLimite" class="form-control" id="fechaLimite" placeholder="Fecha Límite"
+          [attr.min]="getCurrentDate()">
+        <span class="messages text-danger"
+          *ngIf="form.controls['fechaLimite'].touched && form.controls['fechaLimite'].invalid">
+          La fecha límite es obligatoria.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="estado">Estado</label>
+        <select [class.isValid]="form.controls['estado'].touched && form.controls['estado'].valid"
+          [class.is-inValid]="form.controls['estado'].touched && form.controls['estado'].invalid"
+          formControlName="estado" class="form-control" id="estado">
+          <option [value]="'pendientes'">Pendiente</option>
+          <option [value]="'completadas'">Completada</option>
+        </select>
+        <span class="messages text-danger" *ngIf="form.controls['estado'].touched && form.controls['estado'].invalid">
+          El estado es obligatorio.
+        </span>
+      </div>
+
+      <button type="button" [disabled]="form.invalid" (click)="guardar()" class="btn btn-primary">
+        <i class="fa fa-save mr-2"></i> Guardar
+      </button>
+      <button type="button" routerLink="/tasks" class="btn btn-danger ml-3">
+        <i class="fa fa-arrow-left mr-2"></i> Atrás
+      </button>
+      
+    </div>
+
+    <div class="col-md-6">
+      <div formArrayName="personasAsociadas">
+        <div *ngFor="let persona of personasAsociadas.controls; let i = index" [formGroupName]="i"
+          class="form-group mb-3">
+          <label for="nombreCompleto">Persona Asociada:</label>
+          <input formControlName="nombreCompleto" class="form-control" placeholder="Nombre Completo">
+          <div class="form-group mt-3">
+            <label for="edad">Edad:</label>
+            <input formControlName="edad" class="form-control" placeholder="Edad">
+            <span class="messages text-danger"
+              *ngIf="persona.get('edad').touched && persona.get('edad').invalid && persona.get('edad').errors?.['invalidAge']">
+              La edad debe ser mayor a 18 años.
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="habilidades">Habilidades:</label>
+            <angular2-multiselect [data]="dropdownList" formControlName="habilidades"
+              [settings]="dropdownSettings">
+
+              <ng-template let-item="item">
+                <div style="display: flex; align-items: center;">
+                  <i class="fa fa-check" style="margin-right: 8px;"></i>
+                  <p style="color: #333; min-width: 150px;">{{item.name}}</p>
+                </div>
+              </ng-template>
+            </angular2-multiselect>
+            <span class="messages text-danger"
+              *ngIf="persona.get('habilidades').touched && persona.get('habilidades').invalid">
+              Las habilidades son obligatorias.
+            </span>
+          </div>
+
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-danger btn-sm"  [disabled]="personasAsociadas.length == 1" (click)="eliminarPersona(i)">
+              <i class="fa fa-trash mr-1"></i>Eliminar
+            </button>
+            <button type="button" [disabled]="personasAsociadas.length == 2" class="btn btn-success btn-sm ml-2" (click)="agregarPersona()">
+              <i class="fa fa-users"></i> Añadir Persona
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-card>

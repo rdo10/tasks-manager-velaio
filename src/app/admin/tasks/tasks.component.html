@@ -1,0 +1,8 @@
+<app-card [titulo]="'Listado de Tareas'">
+   <div class="col-12">
+      <button type="button" routerLink="/tasks/new" class="btn-lg btn-success mb-3"><i class=" mr-2 fa fa-plus"></i>Agregar Tarea</button>
+      <datatable #datatable (accionVer)="openModal($event)" [columns]="columns" [id]="id" (accionEditar)="editar($event)"  [modales]="modales"></datatable>
+   </div>
+
+   <app-modal *ngIf="isModalOpen" [peopleAssociated]="peopleAssociated" (close)="closeModal()"></app-modal>
+</app-card>
